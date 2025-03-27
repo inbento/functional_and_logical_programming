@@ -21,6 +21,11 @@ let circle_area rad=
 let cylinder_area rad h=
     (circle_area rad) * h
 
+let rec summ_digits num = 
+    if num = 0 then 0
+    else 
+    (num % 10) + summ_digits (num / 10) 
+
 
 
 [<EntryPoint>]
@@ -37,5 +42,9 @@ let main argv =
     Console.WriteLine("Введите высоту цилиндра: ")
     let h = Console.ReadLine() |> float
     Console.WriteLine($"Площадь цилиндра: {cylinder_area rad h}")
+
+    Console.WriteLine("Введите число: ")
+    let num = Console.ReadLine() |> int
+    Console.WriteLine($"Сумма цифр числа: {summ_digits num}")
 
     0
