@@ -17,11 +17,9 @@ let solve a b c =
 let circle_area rad=
     Math.PI * rad * rad
   
-let myltiply area h =
-    area * h
 
-let cylinder_area =
-    circle_area >> myltiply
+let cylinder_area rad h=
+    (circle_area rad) * h
 
 
 
