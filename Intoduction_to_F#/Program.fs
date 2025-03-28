@@ -22,10 +22,14 @@ let cylinder_area rad h=
     (circle_area rad) * h
 
 let rec summ_digits num = 
-    if num = 0 then 0
-    else 
-    (num % 10) + summ_digits (num / 10) 
-
+    let rec summ_digits_rec num summ =
+        if num = 0 then summ
+        else 
+            let num1 = num / 10
+            let cifra = num % 10
+            let new_sum = summ + cifra
+            summ_digits_rec num1 new_sum
+    summ_digits_rec num 0
 
 
 [<EntryPoint>]
