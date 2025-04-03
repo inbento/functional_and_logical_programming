@@ -26,11 +26,19 @@ let flag selector =
     | true -> summ_digits
     | false -> factorial
 
-
+let rec digits num (func: int->int->int) acc = 
+      match num with
+         | 0 -> acc
+         | n -> digits (n / 10) func (func acc (n % 10))
 
 [<EntryPoint>]
 let main argv = 
 
     Console.WriteLine((flag false) 12)
+
+    Console.WriteLine($"Сумма цифр числа: {digits 123 (fun x y -> (x + y)) 0}")
+    Console.WriteLine($"Произведение цифр числа: {digits 456 (fun x y -> (x * y)) 1}")
+    Console.WriteLine($"Минимальная цифра числа: {digits 459268 (fun x y -> if x < y then x else y) 10}")
+    Console.WriteLine($"Максимальная цифра числа: {digits 459268 (fun x y -> if x < y then y else x) -10}")
 
     0
