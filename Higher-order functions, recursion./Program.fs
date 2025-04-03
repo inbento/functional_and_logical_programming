@@ -43,6 +43,15 @@ let rec digits_with_condition num (func: int->int->int) acc (condition: int->boo
                  | false -> digits_with_condition next_number func acc condition
                  | true -> digits_with_condition next_number func (func acc digit) condition
 
+let language otvet =
+    match otvet with
+    | "F#" | "Prolog" -> Console.WriteLine("Ну ты и подлиза")
+    | "Python" -> Console.WriteLine("Чел хорош")
+    | "Java" -> Console.WriteLine("Ява")
+    | "C++" | "C#" -> Console.WriteLine("Классика")
+    | _ -> Console.WriteLine("Мой создатель не задал действий для этого языка, прости")
+    
+
 [<EntryPoint>]
 let main argv = 
 
@@ -58,5 +67,9 @@ let main argv =
     Console.WriteLine($"Произведение цифр числа, которые меньше 3: {digits_with_condition 8921 (fun x y -> (x * y)) 1 (fun z -> z < 3)}")
     Console.WriteLine($"Максимальная нечетная цифра числа: {digits_with_condition 2345 (fun x y -> if x > y then x else y) 0 (fun z -> z % 2 <> 0)}")
 
+    Console.WriteLine()
+    Console.WriteLine("Какой твой любимый язык программирования?")
+    let otvet = Console.ReadLine() |> string
+    language otvet
 
     0
