@@ -31,6 +31,18 @@ let rec digits num (func: int->int->int) acc =
          | 0 -> acc
          | n -> digits (n / 10) func (func acc (n % 10))
 
+
+let rec digits_with_condition num (func: int->int->int) acc (condition: int->bool) = 
+      match num with
+         | 0 -> acc
+         | n -> 
+             let digit = n % 10
+             let next_number = n / 10
+             let flag = condition digit
+             match flag with
+                 | false -> digits_with_condition next_number func acc condition
+                 | true -> digits_with_condition next_number func (func acc digit) condition
+
 [<EntryPoint>]
 let main argv = 
 
@@ -38,7 +50,13 @@ let main argv =
 
     Console.WriteLine($"Сумма цифр числа: {digits 123 (fun x y -> (x + y)) 0}")
     Console.WriteLine($"Произведение цифр числа: {digits 456 (fun x y -> (x * y)) 1}")
-    Console.WriteLine($"Минимальная цифра числа: {digits 459268 (fun x y -> if x < y then x else y) 10}")
-    Console.WriteLine($"Максимальная цифра числа: {digits 459268 (fun x y -> if x < y then y else x) -10}")
+    Console.WriteLine($"Минимальная цифра числа: {digits 789268 (fun x y -> if x < y then x else y) 10}")
+    Console.WriteLine($"Максимальная цифра числа: {digits 7891366 (fun x y -> if x < y then y else x) -10}")
+
+    Console.WriteLine("Функция с условием.")
+    Console.WriteLine($"Сумма цифр числа, которые больше 5: {digits_with_condition 4567 (fun x y -> (x + y)) 0 (fun z -> z > 5)}")
+    Console.WriteLine($"Произведение цифр числа, которые меньше 3: {digits_with_condition 8921 (fun x y -> (x * y)) 1 (fun z -> z < 3)}")
+    Console.WriteLine($"Максимальная нечетная цифра числа: {digits_with_condition 2345 (fun x y -> if x > y then x else y) 0 (fun z -> z % 2 <> 0)}")
+
 
     0
