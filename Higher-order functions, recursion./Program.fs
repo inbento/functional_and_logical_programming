@@ -120,6 +120,13 @@ let countDigitMoreThree num =
         | _ -> countDigitMoreThreeLoop (num / 10) count
     countDigitMoreThreeLoop num 0
 
+let multDelLessSumDigitsNum num =
+    let rec multDelLoop del mult =
+        match del with
+        | _ when del > num -> mult
+        | _ when (num % del = 0) && (summ_digits num > summ_digits del) -> multDelLoop (del + 1) (mult * del)
+        | _ -> multDelLoop (del + 1) mult
+    multDelLoop 1 1
 
 [<EntryPoint>]
 let main argv = 
@@ -153,5 +160,6 @@ let main argv =
 
     Console.WriteLine($"Сумма простых делителей числа 10 :  {summProstDel 10}")
     Console.WriteLine($"Количество нечетных цифр, больших 3, числа 2137 :  {countDigitMoreThree 2137}")
+    Console.WriteLine($"Прозведение делителей числа, сумма цифр которых меньше, чем сумма цифр исходного числа 148:  {multDelLessSumDigitsNum 148}")
 
     0
