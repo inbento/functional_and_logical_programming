@@ -71,7 +71,7 @@ let rec gcd a b =
     | _ -> gcd b (a % b)
 
 
-let processCoprimes n (func: int -> int -> int) value = 
+let process_coprimes n (func: int -> int -> int) value  = 
     let rec loop n f acc current =
         if current <= 0 then acc
         else
@@ -82,8 +82,20 @@ let processCoprimes n (func: int -> int -> int) value =
             loop n f new_acc (current - 1)
     loop n func value n
 
+let process_coprimes_with_condition n (func: int -> int -> int) value (condition: int->bool) =
+    let rec loop n f acc current =
+        if current <= 0 then acc
+        else
+            let flag = condition current
+            let new_acc =
+                if gcd n current = 1 && flag then
+                    f acc current
+                else acc
+            loop n f new_acc (current - 1)
+    loop n func value n
+
 let Euler_fun n =
-    processCoprimes n (fun x y -> x + 1) 0
+    process_coprimes n (fun x y -> x + 1) 0
 
 [<EntryPoint>]
 let main argv = 
@@ -107,9 +119,9 @@ let main argv =
     curry_language ()
     *)
 
-    Console.WriteLine($"Сумма взаимно простых с 10 :  {processCoprimes 10 (fun x y -> (x + y)) 0}")
-    Console.WriteLine($"Произведение взаимно простых с 10 :  {processCoprimes 10 (fun x y -> (x * y)) 1}")
+    Console.WriteLine($"Сумма взаимно простых с 10 :  {process_coprimes 10 (fun x y -> (x + y)) 0}")
+    Console.WriteLine($"Произведение взаимно простых с 10 :  {process_coprimes 10 (fun x y -> (x * y)) 1}")
     Console.WriteLine($"Функция Эйлера для числа 10 :  {Euler_fun 10}")
 
-
+    Console.WriteLine($"Сумма взаимно простых с 10 и делящихся на 3  :  {process_coprimes_with_condition 10 (fun x y -> (x + y)) 0 (fun z -> z % 3 = 0)}")
     0
