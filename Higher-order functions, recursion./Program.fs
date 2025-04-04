@@ -76,9 +76,9 @@ let process_coprimes n (func: int -> int -> int) value  =
         if current <= 0 then acc
         else
             let new_acc =
-                if gcd n current = 1 then
-                    f acc current
-                else acc
+                match gcd n current with
+                    | 1 -> f acc current
+                    | _ ->acc
             loop n f new_acc (current - 1)
     loop n func value n
 
@@ -88,14 +88,29 @@ let process_coprimes_with_condition n (func: int -> int -> int) value (condition
         else
             let flag = condition current
             let new_acc =
-                if gcd n current = 1 && flag then
-                    f acc current
-                else acc
+                match gcd n current with
+                    | 1 when flag -> f acc current
+                    | _ ->acc
             loop n f new_acc (current - 1)
     loop n func value n
 
 let Euler_fun n =
     process_coprimes n (fun x y -> x + 1) 0
+
+        
+let rec isPrime digit div =
+    match () with
+        | _ when div * div > digit -> true
+        | _ when digit % div = 0 -> false
+        | _ -> isPrime digit (div + 1)
+
+let summProstDel num =
+    let rec summProstDelLoop acc del =
+        match del with
+        | _ when del > num -> acc
+        | _ when (num % del = 0) && (isPrime del 2) -> summProstDelLoop (acc + del) (del+1)
+        | _ -> summProstDelLoop acc (del+1)
+    summProstDelLoop 0 2
 
 [<EntryPoint>]
 let main argv = 
@@ -124,4 +139,7 @@ let main argv =
     Console.WriteLine($"Функция Эйлера для числа 10 :  {Euler_fun 10}")
 
     Console.WriteLine($"Сумма взаимно простых с 10 и делящихся на 3  :  {process_coprimes_with_condition 10 (fun x y -> (x + y)) 0 (fun z -> z % 3 = 0)}")
+    
+    Console.WriteLine($"Сумма простых делителей числа 10 :  {summProstDel 10}")
+
     0
