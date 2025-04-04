@@ -112,6 +112,15 @@ let summProstDel num =
         | _ -> summProstDelLoop acc (del+1)
     summProstDelLoop 0 2
 
+let countDigitMoreThree num =
+    let rec countDigitMoreThreeLoop num count =
+        match num with
+        | 0 -> count
+        | _ when ((num % 10) % 2 <> 0) && ((num % 10) > 3) -> countDigitMoreThreeLoop (num / 10) (count + 1)
+        | _ -> countDigitMoreThreeLoop (num / 10) count
+    countDigitMoreThreeLoop num 0
+
+
 [<EntryPoint>]
 let main argv = 
 
@@ -140,6 +149,9 @@ let main argv =
 
     Console.WriteLine($"Сумма взаимно простых с 10 и делящихся на 3  :  {process_coprimes_with_condition 10 (fun x y -> (x + y)) 0 (fun z -> z % 3 = 0)}")
     
+    Console.WriteLine()
+
     Console.WriteLine($"Сумма простых делителей числа 10 :  {summProstDel 10}")
+    Console.WriteLine($"Количество нечетных цифр, больших 3, числа 2137 :  {countDigitMoreThree 2137}")
 
     0
