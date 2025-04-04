@@ -128,6 +128,20 @@ let multDelLessSumDigitsNum num =
         | _ -> multDelLoop (del + 1) mult
     multDelLoop 1 1
 
+let chooseFunc ans = 
+     match ans with 
+     | 1 -> summProstDel 
+     | 2 -> countDigitMoreThree
+     | 3 -> multDelLessSumDigitsNum 
+     | _ -> failwith "Нет функции с таким номером"
+ 
+let SuperPoschooseFunc =
+     chooseFunc >> (fun f -> f) 
+ 
+let CyrrychooseFunc (otv, num) =
+     (chooseFunc otv) num
+
+
 [<EntryPoint>]
 let main argv = 
 
@@ -148,7 +162,7 @@ let main argv =
     superpos_language ()
     Console.WriteLine()
     curry_language ()
-    *)
+    
 
     Console.WriteLine($"Сумма взаимно простых с 10 :  {process_coprimes 10 (fun x y -> (x + y)) 0}")
     Console.WriteLine($"Произведение взаимно простых с 10 :  {process_coprimes 10 (fun x y -> (x * y)) 1}")
@@ -161,5 +175,12 @@ let main argv =
     Console.WriteLine($"Сумма простых делителей числа 10 :  {summProstDel 10}")
     Console.WriteLine($"Количество нечетных цифр, больших 3, числа 2137 :  {countDigitMoreThree 2137}")
     Console.WriteLine($"Прозведение делителей числа, сумма цифр которых меньше, чем сумма цифр исходного числа 148:  {multDelLessSumDigitsNum 148}")
+    *)
+
+    Console.WriteLine("Введите номер функции и число:")
+    let input = Console.ReadLine().Split()
+    let tuple = (int input.[0], int input.[1])
+    Console.WriteLine($"Суперпозиция:{(SuperPoschooseFunc (fst tuple)) (snd tuple)}")
+    Console.WriteLine($"Каррирование:{CyrrychooseFunc tuple}")
 
     0
