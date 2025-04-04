@@ -55,9 +55,14 @@ let language otvet =
 let superpos_language () =
     Console.WriteLine("Какой твой любимый язык программирования?")
     (Console.ReadLine >> language >> Console.WriteLine)()
-    
-    
 
+let curry_language () =
+    Console.WriteLine("Какой твой любимый язык программирования?")
+    let cur_fun inputReader processor outputWriter = 
+         let userInput = inputReader()
+         let processedResult = processor userInput
+         outputWriter processedResult
+    cur_fun Console.ReadLine language Console.WriteLine
 
 [<EntryPoint>]
 let main argv = 
@@ -73,7 +78,10 @@ let main argv =
     Console.WriteLine($"Сумма цифр числа, которые больше 5: {digits_with_condition 4567 (fun x y -> (x + y)) 0 (fun z -> z > 5)}")
     Console.WriteLine($"Произведение цифр числа, которые меньше 3: {digits_with_condition 8921 (fun x y -> (x * y)) 1 (fun z -> z < 3)}")
     Console.WriteLine($"Максимальная нечетная цифра числа: {digits_with_condition 2345 (fun x y -> if x > y then x else y) 0 (fun z -> z % 2 <> 0)}")
+    Console.WriteLine("-----------------------------")
 
-    superpos_language()
+    superpos_language ()
+    Console.WriteLine()
+    curry_language ()
 
     0
