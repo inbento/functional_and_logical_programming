@@ -64,9 +64,31 @@ let curry_language () =
          outputWriter processedResult
     cur_fun Console.ReadLine language Console.WriteLine
 
+
+let rec gcd a b =
+    match b with
+    |0 -> a
+    | _ -> gcd b (a % b)
+
+
+let processCoprimes n (func: int -> int -> int) value = 
+    let rec loop n f acc current =
+        if current <= 0 then acc
+        else
+            let new_acc =
+                if gcd n current = 1 then
+                    f acc current
+                else acc
+            loop n f new_acc (current - 1)
+    loop n func value n
+
+let Euler_fun n =
+    processCoprimes n (fun x y -> x + 1) 0
+
 [<EntryPoint>]
 let main argv = 
 
+    (*
     Console.WriteLine((flag false) 12)
 
     Console.WriteLine($"Сумма цифр числа: {digits 123 (fun x y -> (x + y)) 0}")
@@ -83,5 +105,11 @@ let main argv =
     superpos_language ()
     Console.WriteLine()
     curry_language ()
+    *)
+
+    Console.WriteLine($"Сумма взаимно простых с 10 :  {processCoprimes 10 (fun x y -> (x + y)) 0}")
+    Console.WriteLine($"Произведение взаимно простых с 10 :  {processCoprimes 10 (fun x y -> (x * y)) 1}")
+    Console.WriteLine($"Функция Эйлера для числа 10 :  {Euler_fun 10}")
+
 
     0
