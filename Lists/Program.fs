@@ -113,6 +113,21 @@ let findBetweenMins list =
             let endPos = max pos1 pos2
             countBetween startPos endPos 0 0 list
 
+
+let maxOddElement list =
+    let rec findMaxOdd currentMax = function
+        | [] -> currentMax
+        | head::tail when head % 2 <> 0 -> 
+            if head > currentMax then 
+                findMaxOdd head tail
+            else 
+                findMaxOdd currentMax tail
+        | _::tail -> 
+            findMaxOdd currentMax tail
+
+    let result = findMaxOdd Int32.MinValue list
+    result
+
 [<EntryPoint>]
 let main argv =
 
@@ -141,5 +156,7 @@ let main argv =
     let countBetweenMin = findBetweenMins list
     Console.WriteLine($"Количество элементов, расположенные между первым и вторым минимальным: {countBetweenMin}")
 
+    let maxOdd = maxOddElement list
+    Console.WriteLine($"Максимальный нечетный элемент списка:{maxOdd}")
 
     0
