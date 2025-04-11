@@ -128,6 +128,22 @@ let maxOddElement list =
     let result = findMaxOdd Int32.MinValue list
     result
 
+let PositiveNegative lst =
+    let rec collectPositives acc = function
+        | [] -> acc
+        | head::tail when head > 0 -> collectPositives (head::acc) tail
+        | _::tail -> collectPositives acc tail
+
+    let rec collectNegatives acc = function
+        | [] -> acc
+        | head::tail when head < 0 -> collectNegatives (head::acc) tail
+        | _::tail -> collectNegatives acc tail
+
+    let positives = collectPositives [] lst |> List.rev
+    let negatives = collectNegatives [] lst |> List.rev
+
+    positives @ negatives
+
 [<EntryPoint>]
 let main argv =
 
@@ -135,28 +151,32 @@ let main argv =
     let n = Convert.ToInt32(Console.ReadLine())
     Console.WriteLine("Введите элементы списка:")
     let list = readList n
-    Console.WriteLine("Исходный список:")
-    writeList list
+    //Console.WriteLine("Исходный список:")
+    //writeList list
 
-    let rotatedChurch = rotateLeftChurch list
+    //let rotatedChurch = rotateLeftChurch list
     
-    Console.WriteLine("Список После сдвига на 3 влево(Чёрч):")
-    writeList rotatedChurch 
+    //Console.WriteLine("Список После сдвига на 3 влево(Чёрч):")
+    //writeList rotatedChurch 
 
-    let rotated = rotateLeft 3 list
+    //let rotated = rotateLeft 3 list
     
-    Console.WriteLine("Список после сдвига на 3 позиции влево:")
-    writeList rotated
+    //Console.WriteLine("Список после сдвига на 3 позиции влево:")
+    //writeList rotated
 
-    let elemBetween = findBetweenMaxes list
+    //let elemBetween = findBetweenMaxes list
 
-    Console.WriteLine("Элементы, расположенные между первым и вторым максимальным:")
-    writeList elemBetween
+    //Console.WriteLine("Элементы, расположенные между первым и вторым максимальным:")
+    //writeList elemBetween
 
-    let countBetweenMin = findBetweenMins list
-    Console.WriteLine($"Количество элементов, расположенные между первым и вторым минимальным: {countBetweenMin}")
+    //let countBetweenMin = findBetweenMins list
+    //Console.WriteLine($"Количество элементов, расположенные между первым и вторым минимальным: {countBetweenMin}")
 
-    let maxOdd = maxOddElement list
-    Console.WriteLine($"Максимальный нечетный элемент списка:{maxOdd}")
+    //let maxOdd = maxOddElement list
+    //Console.WriteLine($"Максимальный нечетный элемент списка:{maxOdd}")
+
+    let PosNeg = PositiveNegative list
+    Console.WriteLine("Вывод положительных элементов списка, а после отрицательных")
+    writeList PosNeg
 
     0
