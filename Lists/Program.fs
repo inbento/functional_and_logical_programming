@@ -53,6 +53,37 @@ let rotateLeft n list =
     let (front, back) = splitAt [] shift list
     back @ front
 
+let findBetweenMaxes list =
+
+    let rec findMaxes firstMax firstPos secondMax secondPos pos = function
+        | [] -> (firstMax, firstPos, secondMax, secondPos)
+        | head::tail when head > firstMax -> 
+            findMaxes head pos firstMax firstPos (pos + 1) tail
+        | head::tail when head > secondMax -> 
+            findMaxes firstMax firstPos head pos (pos + 1) tail
+        | _::tail -> 
+            findMaxes firstMax firstPos secondMax secondPos (pos + 1) tail
+
+    // Извлекаем элементы между позициями
+    let rec Between start finish current acc = function
+        | [] -> List.rev acc
+        | head::tail when current > start && current < finish -> 
+            Between start finish (current + 1) (head::acc) tail
+        | _::tail -> 
+            Between start finish (current + 1) acc tail
+
+    match list with
+    | [] | [_] -> []
+    | _ ->
+        let (max1, pos1, max2, pos2) = 
+            findMaxes Int32.MinValue -1 Int32.MinValue -1 0 list
+        
+        if pos1 = -1 || pos2 = -1 then []
+        else
+            let startPos = min pos1 pos2
+            let endPos = max pos1 pos2
+            Between startPos endPos 0 [] list
+
 [<EntryPoint>]
 let main argv =
 
@@ -72,5 +103,12 @@ let main argv =
     
     Console.WriteLine("Список после сдвига на 3 позиции влево:")
     writeList rotated
+
+    let elemBetween = findBetweenMaxes list
+
+    Console.WriteLine("Элементы, расположенные между первым и вторым максимальным:")
+    writeList elemBetween
+
+
 
     0
