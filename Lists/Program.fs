@@ -64,7 +64,6 @@ let findBetweenMaxes list =
         | _::tail -> 
             findMaxes firstMax firstPos secondMax secondPos (pos + 1) tail
 
-    // Извлекаем элементы между позициями
     let rec Between start finish current acc = function
         | [] -> List.rev acc
         | head::tail when current > start && current < finish -> 
@@ -83,6 +82,36 @@ let findBetweenMaxes list =
             let startPos = min pos1 pos2
             let endPos = max pos1 pos2
             Between startPos endPos 0 [] list
+
+let findBetweenMins list =
+
+    let rec findMins firstMin firstPos secondMin secondPos pos = function
+        | [] -> (firstMin, firstPos, secondMin, secondPos)
+        | head::tail when head < firstMin -> 
+            findMins head pos firstMin firstPos (pos + 1) tail
+        | head::tail when head < secondMin -> 
+            findMins firstMin firstPos head pos (pos + 1) tail
+        | _::tail -> 
+            findMins firstMin firstPos secondMin secondPos (pos + 1) tail
+
+    let rec countBetween start finish current count = function
+        | [] -> count
+        | _::tail when current > start && current < finish -> 
+            countBetween start finish (current + 1) (count + 1) tail
+        | _::tail -> 
+            countBetween start finish (current + 1) count tail
+
+    match list with
+    | [] | [_] -> 0
+    | _ ->
+        let (min1, pos1, min2, pos2) = 
+            findMins Int32.MaxValue -1 Int32.MaxValue -1 0 list
+        
+        if pos1 = -1 || pos2 = -1 then 0
+        else
+            let startPos = min pos1 pos2
+            let endPos = max pos1 pos2
+            countBetween startPos endPos 0 0 list
 
 [<EntryPoint>]
 let main argv =
@@ -109,6 +138,8 @@ let main argv =
     Console.WriteLine("Элементы, расположенные между первым и вторым максимальным:")
     writeList elemBetween
 
+    let countBetweenMin = findBetweenMins list
+    Console.WriteLine($"Количество элементов, расположенные между первым и вторым минимальным: {countBetweenMin}")
 
 
     0
