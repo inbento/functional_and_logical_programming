@@ -1,5 +1,9 @@
 ﻿open System
 
+type IPrint = interface
+    abstract member Print: unit -> unit
+    end
+
 [<AbstractClass>]
 type GeometricFigure() =
     abstract member CalculateArea: unit -> float
@@ -7,6 +11,8 @@ type GeometricFigure() =
 
 type Rectangle(width: float, height: float) =
     inherit GeometricFigure()
+    interface IPrint with
+        member this.Print() = Console.WriteLine(this.ToString())
 
     member val Width = width with get, set
     member val Height = height with get, set
@@ -19,6 +25,8 @@ type Rectangle(width: float, height: float) =
 
 type Square(side: float) =
     inherit Rectangle(side, side)
+    interface IPrint with
+        member this.Print() = Console.WriteLine(this.ToString())
 
     member this.Side
         with get() = this.Width
@@ -32,7 +40,9 @@ type Square(side: float) =
 
 type Circle(radius: float) =
     inherit GeometricFigure()
-    
+    interface IPrint with
+        member this.Print() = Console.WriteLine(this.ToString())
+        
     member val Radius = radius with get, set
     
     override this.CalculateArea() = Math.PI * this.Radius * this.Radius
@@ -46,14 +56,12 @@ type Circle(radius: float) =
 let main argv =
 
     let rect = Rectangle(5.0, 3.0)
-    Console.WriteLine(rect.ToString())
+    (rect :> IPrint).Print()
 
     let square = Square(4.0)
-    Console.WriteLine(square.ToString())
+    (square :> IPrint).Print()
 
     let circle = Circle(3.0)
-    Console.WriteLine(circle.ToString())
-
-
+    (circle :> IPrint).Print()
     
     0
