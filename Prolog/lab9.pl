@@ -28,8 +28,26 @@ gcd(N1, N2, Result) :-
 
 
 
+%Задание 3 (Вар 7)
+
+shift(List,Shift) :- shift_right(List,Shifted_list,Shift), write_list(Shifted_list), !.
+
+write_list([]) :- !.
+write_list([H|T]) :- write(H), write(","), write_list(T).
+
+shift_right(List,Shifted_list,Shift) :- length(List,Len), (Len >= Shift -> SplitPos is Len - Shift,
+        length(FirstPart,SplitPos), append(FirstPart,LastTwo,List),
+        append(LastTwo,FirstPart,Shifted_list); New_shift is Shift - Len, shift_right(List,Shifted_list,New_shift)).
 
 
+sum_even(List, Sum) :- sum_even_el(List, Sum), write(Sum), nl, !.
+
+sum_even_el([], 0).
+
+sum_even_el([H|T], Sum) :- sum_even_el(T, TempSum), (is_even(H) -> Sum is TempSum + H; Sum = TempSum).
+
+is_even(Number) :-
+    0 is Number mod 2.
 
 
 
